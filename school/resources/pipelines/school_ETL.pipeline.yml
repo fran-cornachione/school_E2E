@@ -1,0 +1,14 @@
+id: 4384d835-f1fc-40c0-b74c-bc6150e9f84f
+pipeline_type: WORKSPACE
+name: school_ETL
+libraries:
+  - glob:
+      include: /Workspace/Users/cornachofrance@gmail.com/school_databricks/school/src/school_ETL/transformations/**
+schema: bronze
+continuous: false
+development: false
+photon: true
+channel: CURRENT
+catalog: school
+serverless: true
+root_path: /Workspace/Users/cornachofrance@gmail.com/school_databricks/school/src/school_ETL
