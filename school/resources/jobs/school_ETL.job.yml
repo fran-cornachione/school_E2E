@@ -1,0 +1,20 @@
+resources:
+  jobs:
+    school_ETL:
+      name: school_ETL
+      trigger:
+        periodic:
+          interval: 30
+          unit: DAYS
+      tasks:
+        - task_key: pipeline-task-4384d835-f1fc-40c0-b74c-bc6150e9f84f
+          pipeline_task:
+            pipeline_id: 4384d835-f1fc-40c0-b74c-bc6150e9f84f
+      notification_settings:
+        no_alert_for_skipped_runs: true
+      email_notifications:
+        no_alert_for_skipped_runs: true
+        on_failure:
+          - cornachofrance@gmail.com
+      queue:
+        enabled: true
