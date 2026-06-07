@@ -1,0 +1,507 @@
+{
+  "datasets": [
+    {
+      "name": "0b960483",
+      "displayName": "fact_student_performance",
+      "config": {
+        "version": "1.1",
+        "source": "school.gold.fact_student_performance",
+        "dimensions": [
+          {
+            "name": "grade_id",
+            "expr": "source.grade_id",
+            "displayName": "Grade Id"
+          },
+          {
+            "name": "student_id",
+            "expr": "source.student_id",
+            "displayName": "Student Id"
+          },
+          {
+            "name": "course_id",
+            "expr": "source.course_id",
+            "displayName": "Course Id"
+          },
+          {
+            "name": "teacher_id",
+            "expr": "source.teacher_id",
+            "displayName": "Teacher Id"
+          },
+          {
+            "name": "semester_id",
+            "expr": "source.semester_id",
+            "displayName": "Semester Id"
+          },
+          {
+            "name": "program_id",
+            "expr": "source.program_id",
+            "displayName": "Program Id"
+          },
+          {
+            "name": "grade_type",
+            "expr": "source.grade_type",
+            "displayName": "Grade Type"
+          },
+          {
+            "name": "score",
+            "expr": "source.score",
+            "displayName": "Score"
+          },
+          {
+            "name": "graded_at",
+            "expr": "source.graded_at",
+            "displayName": "Graded At"
+          },
+          {
+            "name": "passed",
+            "expr": "source.passed",
+            "displayName": "Passed"
+          },
+          {
+            "displayName": "Course Name",
+            "synonyms": [
+              "name of course",
+              "subject",
+              "course title"
+            ],
+            "name": "course_name",
+            "expr": "source.course_name",
+            "comment": "The name or title of the course for which the grade was assigned."
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a020a334",
+      "displayName": "fact_payments",
+      "config": {
+        "version": "1.1",
+        "source": "school.gold.fact_payments",
+        "dimensions": [
+          {
+            "name": "payment_id",
+            "expr": "source.payment_id",
+            "displayName": "Payment Id"
+          },
+          {
+            "name": "invoice_id",
+            "expr": "source.invoice_id",
+            "displayName": "Invoice Id"
+          },
+          {
+            "name": "student_id",
+            "expr": "source.student_id",
+            "displayName": "Student Id"
+          },
+          {
+            "name": "program_id",
+            "expr": "source.program_id",
+            "displayName": "Program Id"
+          },
+          {
+            "name": "fee_plan_id",
+            "expr": "source.fee_plan_id",
+            "displayName": "Fee Plan Id"
+          },
+          {
+            "name": "academic_year",
+            "expr": "source.academic_year",
+            "displayName": "Academic Year"
+          },
+          {
+            "name": "installment_number",
+            "expr": "source.installment_number",
+            "displayName": "Installment Number"
+          },
+          {
+            "name": "amount_due",
+            "expr": "source.amount_due",
+            "displayName": "Amount Due"
+          },
+          {
+            "name": "amount_paid",
+            "expr": "source.amount_paid",
+            "displayName": "Amount Paid"
+          },
+          {
+            "name": "payment_date",
+            "expr": "source.payment_date",
+            "displayName": "Payment Date"
+          },
+          {
+            "name": "due_date",
+            "expr": "source.due_date",
+            "displayName": "Due Date"
+          },
+          {
+            "name": "days_late",
+            "expr": "source.days_late",
+            "displayName": "Days Late"
+          },
+          {
+            "name": "is_late",
+            "expr": "source.is_late",
+            "displayName": "Is Late"
+          },
+          {
+            "name": "payment_method",
+            "expr": "source.payment_method",
+            "displayName": "Payment Method"
+          },
+          {
+            "name": "invoice_status",
+            "expr": "source.invoice_status",
+            "displayName": "Invoice Status"
+          },
+          {
+            "name": "transaction_ref",
+            "expr": "source.transaction_ref",
+            "displayName": "Transaction Ref"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          },
+          {
+            "name": "total_payments",
+            "expr": "COUNT(*)",
+            "comment": "Total number of payments",
+            "displayName": "Total Payments"
+          },
+          {
+            "name": "late_payments_count",
+            "expr": "COUNT_IF(source.is_late = TRUE)",
+            "comment": "Number of late payments",
+            "displayName": "Late Payments Count"
+          },
+          {
+            "name": "late_payment_rate",
+            "expr": "MEASURE(late_payments_count) * 100.0 / MEASURE(total_payments)",
+            "comment": "Percentage of payments that were late",
+            "displayName": "Late Payment Rate (%)"
+          },
+          {
+            "name": "avg_days_late",
+            "expr": "AVG(source.days_late)",
+            "comment": "Average number of days late across all payments",
+            "displayName": "Avg Days Late"
+          },
+          {
+            "name": "total_amount_paid",
+            "expr": "SUM(source.amount_paid)",
+            "comment": "Sum of all payment amounts",
+            "displayName": "Total Amount Paid"
+          }
+        ]
+      }
+    },
+    {
+      "name": "4e9e5ecb",
+      "displayName": "average_score_by_semester",
+      "queryLines": [
+        "SELECT \r\n",
+        "    semester_id,\r\n",
+        "    ROUND(AVG(score), 2) AS average_score\r\n",
+        "FROM \r\n",
+        "    school.gold.fact_student_performance\r\n",
+        "GROUP BY \r\n",
+        "    semester_id\r\n",
+        "ORDER BY \r\n",
+        "    semester_id ASC;"
+      ],
+      "catalog": "school",
+      "schema": "gold"
+    },
+    {
+      "name": "ef29ebe5",
+      "displayName": "collected_by_month",
+      "queryLines": [
+        "SELECT\r\n",
+        "    MONTH(CAST(payment_date AS DATE)) AS month,\r\n",
+        "    ROUND(SUM(amount_paid), 2) AS collected\r\n",
+        "FROM\r\n",
+        "    school.gold.fact_payments\r\n",
+        "GROUP BY\r\n",
+        "    1, YEAR(CAST(payment_date AS date))\r\n",
+        "ORDER BY\r\n",
+        "    1;"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "7e5728e2",
+      "displayName": "Main",
+      "layout": [
+        {
+          "widget": {
+            "name": "most",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "0b960483",
+                  "fields": [
+                    {
+                      "name": "measure(count)",
+                      "expression": "MEASURE(`count`)"
+                    },
+                    {
+                      "name": "course_name",
+                      "expression": "`course_name`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "IN_RANGE(`course_id`, NULL, 10)"
+                    },
+                    {
+                      "expression": "`passed` IN (FALSE)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Top 10 failed courses"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "measure(count)",
+                  "displayName": "Failed Students",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "course_name",
+                  "axis": {
+                    "hideLabels": false,
+                    "hideTitle": false
+                  },
+                  "displayName": "Course",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "x"
+                    }
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "average-score-by-semester",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "0b960483",
+                  "fields": [
+                    {
+                      "name": "avg(score)",
+                      "expression": "AVG(`score`)"
+                    },
+                    {
+                      "name": "semester_id",
+                      "expression": "`semester_id`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Average score by semester"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "avg(score)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "semester_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 4,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "28891353",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ef29ebe5",
+                  "fields": [
+                    {
+                      "name": "month",
+                      "expression": "`month`"
+                    },
+                    {
+                      "name": "sum(collected)",
+                      "expression": "SUM(`collected`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "area",
+              "encodings": {
+                "x": {
+                  "fieldName": "month",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(collected)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 4
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#090D0F"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#11171C"
+      },
+      "widgetBorderColor": {
+        "light": "#FFFFFF",
+        "dark": "#11171C"
+      },
+      "fontColor": {
+        "light": "#11171C",
+        "dark": "#E8ECF0"
+      },
+      "selectionColor": {
+        "light": "#2272B4",
+        "dark": "#8ACAFF"
+      },
+      "visualizationColors": [
+        "#077A9D",
+        "#FFAB00",
+        "#00A972",
+        "#FF3621",
+        "#8BCAE7",
+        "#AB4057",
+        "#99DDB4",
+        "#FCA4A1",
+        "#919191",
+        "#BF7080"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    },
+    "applyModeEnabled": false
+  }
+}
