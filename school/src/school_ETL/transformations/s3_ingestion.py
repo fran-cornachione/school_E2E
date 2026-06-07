@@ -23,7 +23,3 @@ def historical_grades():
             .option("header", "true")
             .load(f"{S3_PATH}/historical_grades") # Folder, not file
     )
-
-@dp.table
-def teacher_certifications():
-    return ingest_cloud_csv("teacher_certifications")

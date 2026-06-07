@@ -102,14 +102,6 @@ FROM
     bronze.teachers;
 
 CREATE OR REPLACE MATERIALIZED VIEW
-    silver.campus_access
-AS
-SELECT
-    *
-FROM 
-    bronze.campus_access;
-
-CREATE OR REPLACE MATERIALIZED VIEW
     silver.departments
 AS SELECT 
     CAST(department_id AS INT) AS department_id,

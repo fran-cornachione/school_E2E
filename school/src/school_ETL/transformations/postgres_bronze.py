@@ -13,10 +13,6 @@ def teachers():
     return spark.read.table("postgres_school.public.teachers")
 
 @dp.materialized_view()
-def campus_access():
-    return spark.read.table("postgres_school.public.campus_access")
-
-@dp.materialized_view()
 def departments():
     return spark.read.table("postgres_school.public.departments")
 
