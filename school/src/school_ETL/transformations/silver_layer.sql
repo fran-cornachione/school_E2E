@@ -147,22 +147,3 @@ AS SELECT
     CAST(is_active AS BOOLEAN) AS is_active
 FROM 
     bronze.semesters;
-
-CREATE OR REPLACE MATERIALIZED VIEW
-    silver.teacher_certifications
-(
-    CONSTRAINT not_expired EXPECT (expiry_date >= current_date)
-)
-AS SELECT
-    teacher_email,
-    certification_name,
-    issuing_organization,
-    issue_date,
-    expiry_date,
-    CASE
-        WHEN expiry_date < current_date THEN true
-        ELSE false
-    END AS is_expired,
-    level
-FROM
-    bronze.teacher_certifications;
